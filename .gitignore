@@ -1,0 +1,13 @@
+.DS_Store
+.vscode/
+.idea/
+
+target/
+*.iml
+*.log
+.spring/
+
+!.mvn/wrapper/maven-wrapper.jar
+
+docker-compose.override.yml
+*.pid
