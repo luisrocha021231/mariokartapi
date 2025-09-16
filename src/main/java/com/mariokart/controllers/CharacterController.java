@@ -17,7 +17,7 @@ import com.mariokart.services.Characterservice;
 @RestController
 @RequestMapping("api/mariokart/characters")
 public class CharacterController {
-    
+
     @Autowired
     private Characterservice characterservice;
 

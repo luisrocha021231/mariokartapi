@@ -22,7 +22,7 @@ public class KartService {
 
         // find the kart type by ID
         KartType karttype = kartTypeRepository.findById(request.getKartTypeId())
-            .orElseThrow(() -> new RuntimeException("Kart type not found"));
+                .orElseThrow(() -> new RuntimeException("Kart type not found"));
 
         // create the kart
         Kart kart = new Kart();

@@ -20,7 +20,7 @@ public class CharacterVariantService {
 
     public CharacterVariant addCharacterVariant(CharacterVariantRequest request) {
 
-        //find the character by ID
+        // find the character by ID
         Character character = characterRepository.findById(request.getCharacterId())
                 .orElseThrow(() -> new RuntimeException("Character not found"));
 
@@ -32,7 +32,7 @@ public class CharacterVariantService {
         variant.setImageUrl(request.getImageUrl());
         variant.setCharacter(character);
 
-        //save on DB
+        // save on DB
         return characterVariantRepository.save(variant);
     }
 

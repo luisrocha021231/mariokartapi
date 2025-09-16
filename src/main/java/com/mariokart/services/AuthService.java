@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class AuthService {
- 
+
     @Autowired
     private UserService userService;
 
@@ -37,27 +37,28 @@ public class AuthService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    //private AuthenticationManagerBuilder authenticationManagerBuilder;
+    // private AuthenticationManagerBuilder authenticationManagerBuilder;
 
     public String authenticate(String username, String password) {
-        // UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
-        // Authentication authResult = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+        // UsernamePasswordAuthenticationToken authenticationToken = new
+        // UsernamePasswordAuthenticationToken(username, password);
+        // Authentication authResult =
+        // authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         // SecurityContextHolder.getContext().setAuthentication(authResult);
         // return jwtUtil.generateToken(authResult);
         Authentication authResult = authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(username, password)
-        );
+                new UsernamePasswordAuthenticationToken(username, password));
         SecurityContextHolder.getContext().setAuthentication(authResult);
         return jwtUtil.generateToken(authResult);
     }
 
     public void registerUser(NewUserDTO newUserDTO) {
-        if(userService.existsByUsername(newUserDTO.getUsername())) {
+        if (userService.existsByUsername(newUserDTO.getUsername())) {
             throw new RuntimeException("Username already exists");
         }
 
         Role roleUser = roleRepository.findByName(RoleList.ROLE_USER)
-                                      .orElseThrow(() -> new RuntimeException("Role not found"));
+                .orElseThrow(() -> new RuntimeException("Role not found"));
         User user = new User(newUserDTO.getUsername(), passwordEncoder.encode(newUserDTO.getPassword()), roleUser);
         userService.save(user);
 

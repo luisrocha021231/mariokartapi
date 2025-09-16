@@ -28,42 +28,47 @@ import com.mariokart.jwt.JwtEntryPoint;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
- 
+
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http,
-                                    JwtAuthenticationFilter jwtFilter,
-                                    JwtEntryPoint jwtEntryPoint,
-                                    AuthenticationProvider authProvider) throws Exception {
+            JwtAuthenticationFilter jwtFilter,
+            JwtEntryPoint jwtEntryPoint,
+            AuthenticationProvider authProvider) throws Exception {
         http
-            .cors(Customizer.withDefaults())
-            .csrf(AbstractHttpConfigurer::disable)
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/register", 
-                                 "/auth/login", 
-                                 "/public/**",
-                                 "/swagger-ui/**",
-                                 "/v3/api-docs/**")
-                .permitAll()
-                .anyRequest()
-                .authenticated()
-            )
-            .exceptionHandling(ex -> ex.authenticationEntryPoint(jwtEntryPoint))
-            .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authenticationProvider(authProvider)
-            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                .cors(Customizer.withDefaults())
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/auth/register",
+                                "/auth/login",
+                                "/public/**",
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**")
+                        .permitAll()
+                        .anyRequest()
+                        .authenticated())
+                .exceptionHandling(ex -> ex.authenticationEntryPoint(jwtEntryPoint))
+                .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authenticationProvider(authProvider)
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         // .httpBasic(Customizer.withDefaults());
 
         return http.build();
     }
 
     @Bean
-    JwtAuthenticationFilter jwtTokenFilter() { return new JwtAuthenticationFilter(); }
+    JwtAuthenticationFilter jwtTokenFilter() {
+        return new JwtAuthenticationFilter();
+    }
 
     @Bean
-    JwtEntryPoint jwtEntryPoint() { return new JwtEntryPoint(); }
+    JwtEntryPoint jwtEntryPoint() {
+        return new JwtEntryPoint();
+    }
 
     @Bean
-    PasswordEncoder passwordEncoder() { return new BCryptPasswordEncoder(); }
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     @Bean
     AuthenticationProvider authenticationProvider(UserDetailsService uds, PasswordEncoder encoder) {
